@@ -1,0 +1,18 @@
+main:
+
+  #Regenerate Health if the food bar is filled.
+  Regenerate: true
+  
+  #Min 0, Max 20
+  FoodLevel: 10
+  #Min 0.xxxxxxxxx1, Max 4.0
+  FoodDrain: 0.001
+  
+  #Names:BLINDNESS,CONFUSION,DAMAGE_RESISTANCE,FAST_DIGGING,FIRE_RESISTANCE,HARM,HEAL,HUNGER,INCREASE_DAMAGE,INVISIBILITY,JUMP,NIGHT_VISION,POISON,REGENERATION,SLOW,SLOW_DIGGING,SPEED,WATER_BREATHING,WEAKNESS,WITHER
+  Potions: 
+    Potion1:
+      Name: SLOW
+      Amplifier: 1
+    Potion2:
+      Name: WEAKNESS
+      Amplifier: 2

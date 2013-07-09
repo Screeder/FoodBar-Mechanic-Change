@@ -9,10 +9,11 @@ main:
   FoodDrain: 0.001
   
   #Names:BLINDNESS,CONFUSION,DAMAGE_RESISTANCE,FAST_DIGGING,FIRE_RESISTANCE,HARM,HEAL,HUNGER,INCREASE_DAMAGE,INVISIBILITY,JUMP,NIGHT_VISION,POISON,REGENERATION,SLOW,SLOW_DIGGING,SPEED,WATER_BREATHING,WEAKNESS,WITHER
+  #For new potions add the same pattern as below: Potion3...
   Potions: 
     Potion1:
       Name: SLOW
       Amplifier: 1
     Potion2:
       Name: WEAKNESS
-      Amplifier: 2
+      Amplifier: 1

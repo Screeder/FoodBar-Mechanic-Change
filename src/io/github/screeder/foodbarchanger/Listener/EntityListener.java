@@ -3,7 +3,6 @@ package io.github.screeder.foodbarchanger.Listener;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
 import io.github.screeder.foodbarchanger.FoodBarChanger;
 
 public class EntityListener implements Listener {
@@ -19,9 +18,12 @@ public class EntityListener implements Listener {
 	@EventHandler
 	public void onRegainHealth(EntityRegainHealthEvent event)
 	{
-		if(event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED)
+		if(!plugin.bRegenerate)
 		{
-			event.setCancelled(true);
+			if(event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED)
+			{
+				event.setCancelled(true);
+			}
 		}
 	}
 	

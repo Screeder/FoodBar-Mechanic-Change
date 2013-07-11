@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import io.github.screeder.foodbarchanger.Listener.EntityListener;
+import io.github.screeder.foodbarchanger.foodchanger.*;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,13 +15,16 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+//Auswählbar ob alles vorgegen oder einzel veränderbar 
+//Playername storen
+
 public class FoodBarChanger extends JavaPlugin {
 		
 	int FoodLevel = 10;
 	public double FoodDrain = 0.001;
 	public boolean bRegenerate = true;
 	Collection<PotionEffect> Potions = new LinkedList<PotionEffect>();
-	HashMap<Player, Boolean> players = new HashMap<Player, Boolean>();
+	HashMap<String, Boolean> players = new HashMap<String, Boolean>();
 	
 	@Override
 	public void onEnable()
@@ -30,10 +34,11 @@ public class FoodBarChanger extends JavaPlugin {
 		World world = getServer().getWorld(worlds.get(0).getName());
 		FoodLevel = getConfig().getInt("main.FoodLevel");
 		FoodDrain = getConfig().getDouble("main.FoodDrain");
-		FoodDrain = getConfig().getDouble("main.Regenerate");
+		bRegenerate = getConfig().getBoolean("main.Regenerate");
 		readPotions();
 		runCheckFood(world);
 		new EntityListener(this);
+		new FoodChanger(this);
 	}
 
 	@Override
@@ -53,7 +58,7 @@ public class FoodBarChanger extends JavaPlugin {
 			int amplifier = getConfig().getInt("main.Potions.Potion" + i + ".Amplifier");				
 			PotionEffectType p = getPotionEffectType(name);
 			if(p != null)
-				Potions.add(new PotionEffect(getPotionEffectType(name), (int) (20L*5), amplifier, false));
+				Potions.add(new PotionEffect(getPotionEffectType(name), (int) (20L*2), amplifier, false));
 		}
 	}
 	
@@ -111,22 +116,22 @@ public class FoodBarChanger extends JavaPlugin {
 		    {	
 		    	checkFood(world);
 		    }
-		}.runTaskTimer(this,0L, 20L * 5);
+		}.runTaskTimer(this,0L, 20L * 1);
 	}
 	
 	private void checkFood(World world)
 	{
 		for(Player player : world.getPlayers())
 		{
-			if(player.getFoodLevel() <= 10)
+			if(player.getFoodLevel() <= FoodLevel)
 			{
 				addPotionEffects(player);
-				players.put(player, true);
+				players.put(player.getName(), true);
 			}
-			if(player.getFoodLevel() > 10 && !players.isEmpty() && players.get(player))
+			if(player.getFoodLevel() > FoodLevel && !players.isEmpty() && players.get(player.getName()))
 			{
 				removePotionEffects(player);
-				players.put(player, false);
+				players.put(player.getName(), false);
 			}
 		}
 	}

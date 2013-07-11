@@ -17,3 +17,5 @@ main:
     Potion2:
       Name: WEAKNESS
       Amplifier: 1
+   
+  ModifyFood: false

@@ -25,7 +25,7 @@ public class EatListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event)
 	{
-		if(plugin.modifyFood && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CAKE_BLOCK && event.getPlayer().getFoodLevel() < 20)
+		if(plugin.modifyFood && event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CAKE_BLOCK && event.getPlayer().getFoodLevel() < 20 && event.getPlayer().hasPermission("foodbarchanger.change"))
 		{
 			Player player = event.getPlayer();
 			Food food = plugin.foodDetails.get(Material.CAKE.getId());
@@ -47,7 +47,9 @@ public class EatListener implements Listener {
 	{
 		Player player = (Player)event.getEntity();
 		Food food = plugin.foodDetails.get(player.getItemInHand().getTypeId());
-		if(player == null || food == null || player.getFoodLevel() > event.getFoodLevel() || !plugin.modifyFood)
+		if(player == null || food == null || player.getFoodLevel() >= event.getFoodLevel() || !plugin.modifyFood)
+			return;
+		if(!player.hasPermission("foodbarchanger.change"))
 			return;
 		if(player.getFoodLevel() + food.food > 20)
 			event.setFoodLevel(MAXVALUE);

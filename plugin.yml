@@ -1,3 +1,12 @@
 name: FoodBar Mechanic Change
 main: io.github.screeder.foodbarchanger.FoodBarChanger
-version: 1.1
+version: 1.2
+
+permissions:
+   foodbarchanger.*:
+      description: Gives access to all commands.
+      children:
+         foodbarchanger.change: true
+   foodbarchanger.change:
+      description: Allows you to get foodbar changes.
+      default: true

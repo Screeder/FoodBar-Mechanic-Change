@@ -15,8 +15,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-//Auswählbar ob alles vorgegen oder einzel veränderbar 
-//Playername storen
+//Todo: Multiworld ändern, aus config ausleen lassen welche Welten.
+
 
 public class FoodBarChanger extends JavaPlugin {
 		
@@ -31,12 +31,12 @@ public class FoodBarChanger extends JavaPlugin {
 	{
 		saveDefaultConfig();
 		List<World> worlds = getServer().getWorlds();
-		World world = getServer().getWorld(worlds.get(0).getName());
+		//World world = getServer().getWorld(worlds.get(0).getName());
 		FoodLevel = getConfig().getInt("main.FoodLevel");
 		FoodDrain = getConfig().getDouble("main.FoodDrain");
 		bRegenerate = getConfig().getBoolean("main.Regenerate");
 		readPotions();
-		runCheckFood(world);
+		runCheckFood(worlds);
 		new EntityListener(this);
 		new FoodChanger(this);
 	}
@@ -107,31 +107,36 @@ public class FoodBarChanger extends JavaPlugin {
 		return null;
 	}
 	
-	private void runCheckFood(final World world)
+	private void runCheckFood(final List<World> worlds)
 	{
 		new BukkitRunnable()
 		{
 		    @Override
 		    public void run()
 		    {	
-		    	checkFood(world);
+		    	checkFood(worlds);
 		    }
 		}.runTaskTimer(this,0L, 20L * 1);
 	}
 	
-	private void checkFood(World world)
+	private void checkFood(List<World> worlds)
 	{
-		for(Player player : world.getPlayers())
+		for(World world : worlds)
 		{
-			if(player.getFoodLevel() <= FoodLevel)
+			for(Player player : world.getPlayers())
 			{
-				addPotionEffects(player);
-				players.put(player.getName(), true);
-			}
-			if(player.getFoodLevel() > FoodLevel && !players.isEmpty() && players.get(player.getName()))
-			{
-				removePotionEffects(player);
-				players.put(player.getName(), false);
+				if(!player.hasPermission("foodbarchanger.change"))
+					continue;
+				if(player.getFoodLevel() <= FoodLevel)
+				{
+					addPotionEffects(player);
+					players.put(player.getName(), true);
+				}
+				if(player.getFoodLevel() > FoodLevel && !players.isEmpty()  && players.get(player.getName()) != null)
+				{
+					removePotionEffects(player);
+					players.put(player.getName(), false);
+				}
 			}
 		}
 	}
